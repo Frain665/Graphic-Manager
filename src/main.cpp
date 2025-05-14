@@ -1,7 +1,5 @@
 #include <iostream>
 
-#include <Graphics/Graphics.h>
-
 int main()
 {
 
