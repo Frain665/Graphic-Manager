@@ -21,6 +21,8 @@ file(GLOB SOURCES src/*.cpp)
 file(GLOB HEADERS include/*.h include/Graphics/*h)
 file(GLOB BUTTONS include/**/*.h)
 file(GLOB GRAPHICS include/Graphics/*h)
+file(GLOB GRAPHICS_BUTTONS include/Graphics/Buttons/*h)
+file(GLOB GRAPHICS_TEXT_FIELD include/Graphics/TextField/*h)
 
 add_executable(
     ${PROJECT_NAME} 
@@ -28,6 +30,8 @@ add_executable(
     ${HEADERS} 
     ${BUTTONS}
     ${GRAPHICS}
+    ${GRAPHICS_BUTTONS}
+    ${GRAPHICS_TEXT_FIELD}
 )
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources
@@ -38,6 +42,8 @@ source_group("Source Files" FILES ${SOURCES})
 source_group("Header Files" FILES ${HEADERS})
 source_group("Buttons" FILES ${BUTTONS})
 source_group("Graphics" FILES ${GRAPHICS})
+source_group("Graphics/Buttons" FILES ${GRAPHICS_BUTTONS})
+source_group("Graphics/TextField" FILES ${GRAPHICS_TEXT_FIELD})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "include")
 
