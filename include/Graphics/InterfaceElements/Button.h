@@ -48,8 +48,8 @@ public:
 	sf::RectangleShape& getShape();
 	bool isClicked(const sf::Event& event) const;
 
-	void draw(sf::RenderWindow& target) override;
-	void handleEvent(const sf::Event& event) override;
+	void draw(sf::RenderWindow& window) override;
+	void handleEvent(const sf::RenderWindow& window) override;
 
 private:
 	sf::RectangleShape _shape;

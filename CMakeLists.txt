@@ -16,12 +16,16 @@ message(STATUS "SFML found: ${SFML_VERSION}")
 file(GLOB SOURCES src/*.cpp)
 file(GLOB HEADERS include/*.h)
 file(GLOB INTERFACE_ELEMENTS include/Graphics/InterfaceElements/*.h)
+file(GLOB BUTTON_FACTORY include/Graphics/InterfaceElements/ButtonFactory/*.h)
+file(GLOB TESTS tests/*.cpp tests/*.h)
 
 add_executable(
     ${PROJECT_NAME} 
     ${SOURCES} 
     ${HEADERS} 
     ${INTERFACE_ELEMENTS}
+    ${TESTS}
+    ${BUTTON_FACTORY}
 )
 
 add_custom_command(
@@ -34,6 +38,8 @@ add_custom_command(
 source_group("Source Files" FILES ${SOURCES})
 source_group("Header Files" FILES ${HEADERS})
 source_group("Graphics/InterfaceElements" FILES ${INTERFACE_ELEMENTS})
+source_group("Tests Files" FILES ${TESTS})
+source_group("Graphics/InterfaceElements/ButtonFactory" FILES ${BUTTON_FACTORY})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "include")
 
