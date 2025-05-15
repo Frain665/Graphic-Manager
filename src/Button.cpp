@@ -1,4 +1,4 @@
-#include <Graphics/InterfaceElements/Button.h>
+#include "Graphics/InterfaceElements/Button.h"
 
 Button::Button(const ButtonConfig& config)
 	:_config(config)
@@ -38,6 +38,18 @@ void Button::setEnabled(bool enabled)
 	_state = enabled ? ButtonState::Normal : ButtonState::Disabled;
 }
 
+sf::Color Button::lerpColors(const sf::Color& a, const sf::Color& b, float t)
+{
+	t = std::clamp(t, 0.0f, 0.1f);
+
+	return sf::Color(
+		static_cast<sf::Uint8>(a.r + (b.r - a.r) * t),
+		static_cast<sf::Uint8>(a.g + (b.g - a.g) * t),
+		static_cast<sf::Uint8>(a.b + (b.g - a.b) * t),
+		static_cast<sf::Uint8>(a.a + (b.a - a.a) * t)
+	);
+}
+
 sf::RectangleShape& Button::getShape()
 {
 	return _shape;
@@ -54,7 +66,7 @@ void Button::draw(sf::RenderWindow& window)
 	window.draw(_config.title);
 }
 
-void Button::handleEvent(const sf::RenderWindow& window)
+void Button::handleEvent(const sf::RenderWindow& window, const sf::Event& event)
 {
 	if (_state == ButtonState::Disabled) return;
 
@@ -67,27 +79,24 @@ void Button::handleEvent(const sf::RenderWindow& window)
 
 	if (contains)
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (event.type == sf::Event::MouseButtonPressed &&
+			event.mouseButton.button == sf::Mouse::Left)
 		{
 			_state = ButtonState::Pressed;
 			_wasPressed = true;
 		}
-		else
-		{
-			if (_wasPressed)
-			{
-				if (_config.onClickAction)
-					_config.onClickAction();
-				_wasPressed = false;
-			}
-			_state = ButtonState::Hovered;
-		}
-
-		if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && _wasPressed)
+		else if (event.type == sf::Event::MouseButtonReleased &&
+			event.mouseButton.button == sf::Mouse::Left &&
+			_wasPressed)
 		{
 			if (_config.onClickAction)
 				_config.onClickAction();
 			_wasPressed = false;
+			_state = ButtonState::Hovered;
+		}
+		else if (_state != ButtonState::Pressed)
+		{
+			_state = ButtonState::Hovered;
 		}
 	}
 	else
@@ -97,6 +106,14 @@ void Button::handleEvent(const sf::RenderWindow& window)
 		_wasPressed = false;
 
 	}
+
+	updateAppearance();
+}
+
+void Button::updateAppearance()
+{
+
+	sf::Color targetColor;
 
 	switch (_state)
 	{
@@ -112,4 +129,6 @@ void Button::handleEvent(const sf::RenderWindow& window)
 	default:
 		_shape.setFillColor(_config.normalColor);
 	}
+
+	_shape.setFillColor(lerpColors(_shape.getFillColor(), targetColor, 0.1f));
 }

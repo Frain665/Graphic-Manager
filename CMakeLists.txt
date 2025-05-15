@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(GraphicManager LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug)
@@ -41,7 +41,7 @@ source_group("Graphics/InterfaceElements" FILES ${INTERFACE_ELEMENTS})
 source_group("Tests Files" FILES ${TESTS})
 source_group("Graphics/InterfaceElements/ButtonFactory" FILES ${BUTTON_FACTORY})
 
-target_include_directories(${PROJECT_NAME} PRIVATE "include")
+target_include_directories(${PROJECT_NAME} PRIVATE "include" "tests")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
      sfml-system

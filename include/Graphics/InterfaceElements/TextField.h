@@ -27,7 +27,8 @@ public:
 	void setText(const std::string& text);
 	void setPosition(float xPos, float yPos) override;
 
-	void handleEvent(const sf::Event& event) override;
+	void handleEvent(const sf::RenderWindow& window, const sf::Event& event) override;
+	void handleTextInput(sf::Uint32 unicode);
 	void draw(sf::RenderWindow& window) override;
 
 private:

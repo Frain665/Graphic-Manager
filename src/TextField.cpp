@@ -60,11 +60,11 @@ void TextField::setPosition(float xPos, float yPos)
 	_background.setSize(sf::Vector2f(xPos, yPos));
 }
 
-void TextField::handleEvent(const sf::Event& event)
+void TextField::handleEvent(const sf::RenderWindow& window, const sf::Event& event)
 {
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		auto mousePos = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+		 const auto mousePos = sf::Vector2f( event.mouseButton.x, event.mouseButton.y );
 		_isActive = _background.getGlobalBounds().contains(mousePos);
 
 		_text.setFillColor(_isActive ? _activeColor : _inactiveColor);
@@ -78,34 +78,32 @@ void TextField::handleEvent(const sf::Event& event)
 
 	if (_isActive && event.type == sf::Event::TextEntered)
 	{
-		if (event.text.unicode < 128)
+		handleTextInput(event.text.unicode);
+	}
+	
+}
+
+void TextField::handleTextInput(sf::Uint32 unicode)
+{
+	if (_keyRepeatClock.getElapsedTime().asSeconds() > 100)
+	{
+		return;
+	}
+
+	if (unicode == '\b')
+	{
+		if (!_inputString.empty())
 		{
-			if (event.text.unicode == '\b')
-			{
-				if (!_inputString.empty())
-				{
-					_inputString.pop_back();
-					_text.setString(_inputString);
-					_keyRepeatClock.restart();
-				}
-			}
-			else if (event.text.unicode >= 32 && event.text.unicode < 128 &&
-				_inputString.size() < _maxLength)
-			{
-				if (_keyRepeatClock.getElapsedTime().asMilliseconds() > 100)
-				{
-					_inputString += static_cast<char>(event.text.unicode);
-					_text.setString(_inputString);
-
-					if (_keyRepeatClock.getElapsedTime().asMilliseconds() > 100) {
-						_keyRepeatClock.restart();
-					}
-				}
-			}
-
-			_text.setString(_inputString);
+			_inputString.pop_back();
 		}
 	}
+	else if (unicode >= 32 && unicode <= 128 && _inputString.size() < _maxLength)
+	{
+		_inputString += static_cast<char>(unicode);
+	}
+
+	_text.setString(_inputString);
+	_keyRepeatClock.restart();
 }
 
 void TextField::draw(sf::RenderWindow& window)
