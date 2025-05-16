@@ -33,7 +33,7 @@ private:
 	int _passwordLength;
 	std::string _allowedChars;
 	std::optional<AnchoredElement> _anchor;
-	const std::string _fontPath = RESOURCES_DIR "fonts/defaultFont.otf";
+	const std::string _fontPath = RESOURCES_DIR "Fonts/defaultFont.otf";
 	sf::Font _font;
 
 	std::vector<std::unique_ptr<Button>> _buttons;

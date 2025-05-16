@@ -15,15 +15,15 @@ Button::Button(const ButtonConfig& config)
 	);
 }
 
-void Button::setPosition(float xPos, float yPos)
+void Button::setPosition(const sf::Vector2f& pos)
 {
 	assert(_shape.getSize().x > 0 && _shape.getSize().y > 0);
 	assert(!_config.title.getString().isEmpty());
 
-	auto shapeCenter = sf::Vector2f(xPos, yPos) + _shape.getSize() / ButtonConstants::HALF_DIVIDER;
+	auto shapeCenter = sf::Vector2f(pos) + _shape.getSize() / ButtonConstants::HALF_DIVIDER;
 	auto textSize = _config.title.getLocalBounds();
 
-	_config.buttonPosition = sf::Vector2f(xPos, yPos);
+	_config.buttonPosition = pos;
 	_shape.setPosition(_config.buttonPosition);
 
 	_config.title.setPosition(

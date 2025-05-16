@@ -26,18 +26,18 @@ void Engine::uploadResources()
 	size_t buttonIndex = _buttons.size() - 1;
 
 	_textField = std::make_shared <TextField>();
-	_textField->setSize(sf::Vector2f(400.f, 100.f));
-	_textField->setPosition(300.f, 300.f);
+	_textField->setSize(sf::Vector2f(100.f, 50.f));
+	_textField->setPosition(sf::Vector2f(400, 300.f));
 
 	_anchor.emplace(AnchorHorizontal::CENTER,
 		AnchorVertical::BOTTOM,
 		sf::Vector2f(-70, -20),
 		sf::Vector2f(200, 50),
-		[this, buttonIndex](float xPos, float yPos, const sf::Vector2f& size)
+		[this, buttonIndex](const sf::Vector2f& offset, const sf::Vector2f& size)
 		{
 			if (buttonIndex < _buttons.size() && _buttons[buttonIndex])
 			{
-				_buttons[buttonIndex]->setPosition(xPos, yPos);
+				_buttons[buttonIndex]->setPosition(offset);
 				_buttons[buttonIndex]->getShape().setSize(size);
 			}
 		});
@@ -109,26 +109,6 @@ void Engine::render()
 
 void Engine::updatingButtons()
 {
-	if (_buttons.empty() || !_textField)
-	{
-		return;
-	}
-
-	try
-	{
-		const auto& generateButton = _buttons.at(0);
-
-		if (generateButton->isClicked(_event))
-		{
-			std::string newPassword = generateRandomPassword();
-			_textField->setText(newPassword);
-
-			std::cout << "Generated new password: " << newPassword << std::endl;
-		}
-	}
-	catch (const std::exception& e) {
-		std::cerr << "Error in updatingButtons: " << e.what() << std::endl;
-	}
 
 }
 

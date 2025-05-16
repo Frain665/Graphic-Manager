@@ -55,9 +55,10 @@ void TextField::setText(const std::string& text)
 	_text.setString(_inputString);
 }
 
-void TextField::setPosition(float xPos, float yPos)
+void TextField::setPosition(const sf::Vector2f& pos)
 {
-	_background.setSize(sf::Vector2f(xPos, yPos));
+	_background.setPosition(sf::Vector2f(pos));
+	_text.setPosition(pos.x + 10.f, pos.y + 10);
 }
 
 void TextField::handleEvent(const sf::RenderWindow& window, const sf::Event& event)

@@ -56,7 +56,7 @@ class Button : public Widget
 public:
 	explicit Button(const ButtonConfig& config);
 
-	void setPosition(float xPos, float yPos) override;
+	void setPosition(const sf::Vector2f& pos) override;
 	void setEnabled(bool enabled);
 
 	sf::Color lerpColors(const sf::Color& a, const sf::Color& b, float t);
