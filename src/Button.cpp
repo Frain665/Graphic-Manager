@@ -5,7 +5,7 @@ Button::Button(const ButtonConfig& config)
 {
 	_shape.setSize(_config.buttonSize);
 	_shape.setPosition(_config.buttonPosition);
-	_shape.setFillColor(_config.normalColor);
+	//_shape.setFillColor(_config.normalColor);
 	_shape.setOutlineThickness(_config.outlineThickness);
 	_shape.setOutlineColor(_config.outlineColor);
 
@@ -118,7 +118,7 @@ void Button::updateAppearance()
 	switch (_state)
 	{
 	case ButtonState::Hovered:
-		_shape.setFillColor(_config.hoverColor);
+		_shape.setFillColor(lerpColors(_shape.getFillColor(), targetColor, 200.1f));
 		break;
 	case ButtonState::Pressed:
 		_shape.setFillColor(_config.pressedColor);
@@ -130,5 +130,4 @@ void Button::updateAppearance()
 		_shape.setFillColor(_config.normalColor);
 	}
 
-	_shape.setFillColor(lerpColors(_shape.getFillColor(), targetColor, 0.1f));
 }

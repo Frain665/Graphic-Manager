@@ -10,6 +10,8 @@
 
 #include <Graphics/InterfaceElements/Button.h>
 #include <Graphics/InterfaceElements/TextField.h>
+#include <Graphics/InterfaceElements/Checkbox.h>
+#include <Graphics/InterfaceElements/ButtonFactory/Default_button_factory.h>
 #include <Exceptions.h>
 #include <AnchoredElement.h>
 
@@ -30,13 +32,12 @@ private:
 	sf::VideoMode _videoMode;
 	std::string _windowTitle;
 
-	int _passwordLength;
-	std::string _allowedChars;
 	std::optional<AnchoredElement> _anchor;
 	const std::string _fontPath = RESOURCES_DIR "Fonts/defaultFont.otf";
 	sf::Font _font;
 
 	std::vector<std::unique_ptr<Button>> _buttons;
+	std::vector<std::unique_ptr<CheckBox>> _checkboxes;
 	std::shared_ptr <TextField> _textField;
 
 public:

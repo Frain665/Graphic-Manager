@@ -1,14 +1,10 @@
 #include "Engine.h"
-#include <AnchoredElement.h>
-#include <Graphics/InterfaceElements/ButtonFactory/Default_button_factory.h>
 
 void Engine::initVariables()
 {
-	_windowTitle = "Password Generator";
+	_windowTitle = "Test";
 	_window = nullptr;
 	_event = {};
-	_passwordLength = 12;
-	_allowedChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()";
 }
 
 void Engine::uploadResources()
@@ -18,12 +14,27 @@ void Engine::uploadResources()
 		throw FontException(_fontPath);
 	}
 
+	size_t buttonIndex = _buttons.size() - 1;
+
 	DefaultButtonFactory defaultButtonFactory(_font);
 
 	auto generateButton = defaultButtonFactory.createButton("Generate", { 200, 50 });
 
 	_buttons.push_back(std::move(generateButton));
-	size_t buttonIndex = _buttons.size() - 1;
+
+	auto checkbox = std::make_unique<CheckBox>("Enable Feature", sf::Vector2f{ 100, 100 });
+	checkbox->setCallback([=](bool checked) {
+		if (checked)
+		{
+			
+		}
+		else
+		{
+			
+		}
+		});
+
+	_checkboxes.emplace_back(std::move(checkbox));
 
 	_textField = std::make_shared <TextField>();
 	_textField->setSize(sf::Vector2f(100.f, 50.f));
@@ -82,7 +93,14 @@ void Engine::init()
 void Engine::update()
 {
 	this->handleInput();
+
 	_textField->handleEvent(*_window, _event);
+
+	for (auto const& box : _checkboxes)
+	{
+		box->handleEvent(*_window, _event);
+	}
+
 	updatingButtons();
 
 	_anchor->update(sf::Vector2u(800, 600));
@@ -102,6 +120,11 @@ void Engine::render()
 		button->draw(*_window);
 	}
 
+	for (const auto& box : _checkboxes)
+	{
+		box->draw(*_window);
+	}
+
 	_textField->draw(*_window);
 
 	_window->display();
@@ -110,22 +133,6 @@ void Engine::render()
 void Engine::updatingButtons()
 {
 
-}
-
-std::string Engine::generateRandomPassword()
-{
-	std::random_device rd;
-	std::mt19937 generator(rd());
-	std::uniform_int_distribution<> distr(0, _allowedChars.size() - 1);
-
-	std::string password;
-	password.reserve(_passwordLength);
-
-	for (int i = 0; i < _passwordLength; ++i) {
-		password += _allowedChars[distr(generator)];
-	}
-
-	return password;
 }
 
 void Engine::handleInput()
