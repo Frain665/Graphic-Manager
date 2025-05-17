@@ -14,16 +14,14 @@ void Engine::uploadResources()
 		throw FontException(_fontPath);
 	}
 
+	DefaultButtonFactory defaultButtonFactory(_font);
+	auto generateButton = defaultButtonFactory.createButton("Generate", { 200, 50 });
+	_buttons.push_back(std::move(generateButton));
 	size_t buttonIndex = _buttons.size() - 1;
 
-	DefaultButtonFactory defaultButtonFactory(_font);
-
-	auto generateButton = defaultButtonFactory.createButton("Generate", { 200, 50 });
-
-	_buttons.push_back(std::move(generateButton));
-
 	auto checkbox = std::make_unique<CheckBox>("Enable Feature", sf::Vector2f{ 100, 100 });
-	checkbox->setCallback([=](bool checked) {
+	checkbox->setCallback([=](bool checked) 
+		{
 		if (checked)
 		{
 			

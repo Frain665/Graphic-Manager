@@ -11,20 +11,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-/*
-
-sf::Color lerpColors(const sf::Color& a, const sf::Color& b, float t) {
-	t = std::clamp(t, 0.0f, 1.0f);
-	return sf::Color(
-		static_cast<sf::Uint8>(a.r + (b.r - a.r) * t),
-		static_cast<sf::Uint8>(a.g + (b.g - a.g) * t),
-		static_cast<sf::Uint8>(a.b + (b.b - a.b) * t),
-		static_cast<sf::Uint8>(a.a + (b.a - a.a) * t)
-	);
-}
-
-*/
-
 namespace ButtonConstants
 {
 	constexpr float HALF_DIVIDER = 2.0f;

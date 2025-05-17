@@ -5,7 +5,7 @@ Button::Button(const ButtonConfig& config)
 {
 	_shape.setSize(_config.buttonSize);
 	_shape.setPosition(_config.buttonPosition);
-	//_shape.setFillColor(_config.normalColor);
+	_shape.setFillColor(_config.normalColor);
 	_shape.setOutlineThickness(_config.outlineThickness);
 	_shape.setOutlineColor(_config.outlineColor);
 
