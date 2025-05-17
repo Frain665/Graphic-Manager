@@ -42,6 +42,7 @@ public:
 	bool getChecked() const;
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
+	sf::RectangleShape& getShape();
 
 	void draw(sf::RenderWindow& window) override;
 	void handleEvent(const sf::RenderWindow& window, const sf::Event& event) override;

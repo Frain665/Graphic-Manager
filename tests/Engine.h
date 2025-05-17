@@ -32,7 +32,9 @@ private:
 	sf::VideoMode _videoMode;
 	std::string _windowTitle;
 
-	std::optional<AnchoredElement> _anchor;
+	std::optional<AnchoredElement> _buttonAnchor;
+	std::optional<AnchoredElement> _checkboxAnchor;
+
 	const std::string _fontPath = RESOURCES_DIR "Fonts/defaultFont.otf";
 	sf::Font _font;
 

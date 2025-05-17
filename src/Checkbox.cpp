@@ -11,7 +11,7 @@ CheckBox::CheckBox(const std::string& text,
 	}
 
 	_box.setSize({ 100.f, 20.f });
-	_box.setFillColor(sf::Color::White);
+	_box.setFillColor(sf::Color(200, 200, 200));
 	_box.setOutlineThickness(2.f);
 	_box.setOutlineColor(sf::Color::Black);
 
@@ -88,6 +88,11 @@ sf::Vector2f CheckBox::getSize() const
 	return _box.getSize();
 }
 
+sf::RectangleShape& CheckBox::getShape()
+{
+	return _box;
+}
+
 void CheckBox::draw(sf::RenderWindow& window)
 {
 	window.draw(_box);
@@ -111,6 +116,19 @@ void CheckBox::handleEvent(const sf::RenderWindow& window, const sf::Event& even
 		if (contains)
 		{
 			_isChecked = !_isChecked;
+
+			if (_isChecked) 
+			{
+				_box.setFillColor(sf::Color(70, 70, 70));    
+				_checkMark.setFillColor(sf::Color::Green);   
+				_label.setFillColor(sf::Color::White);
+			}
+			else 
+			{
+				_box.setFillColor(sf::Color(200, 200, 200)); 
+				_checkMark.setFillColor(sf::Color::Blue); 
+				_label.setFillColor(sf::Color::Black);      
+			}
 
 			if (_callback)
 			{

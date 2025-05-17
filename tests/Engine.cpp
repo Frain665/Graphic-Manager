@@ -17,18 +17,17 @@ void Engine::uploadResources()
 	DefaultButtonFactory defaultButtonFactory(_font);
 	auto generateButton = defaultButtonFactory.createButton("Generate", { 200, 50 });
 	_buttons.push_back(std::move(generateButton));
-	size_t buttonIndex = _buttons.size() - 1;
 
 	auto checkbox = std::make_unique<CheckBox>("Enable Feature", sf::Vector2f{ 100, 100 });
 	checkbox->setCallback([=](bool checked) 
 		{
 		if (checked)
 		{
-			
+			std::cout << "ON" << std::endl;
 		}
 		else
 		{
-			
+			std::cout << "OFF" << std::endl;
 		}
 		});
 
@@ -38,7 +37,10 @@ void Engine::uploadResources()
 	_textField->setSize(sf::Vector2f(100.f, 50.f));
 	_textField->setPosition(sf::Vector2f(400, 300.f));
 
-	_anchor.emplace(AnchorHorizontal::CENTER,
+	size_t buttonIndex = _buttons.size() - 1;
+	size_t checkboxIndex = _checkboxes.size() - 1;
+
+	_buttonAnchor.emplace(AnchorHorizontal::CENTER,
 		AnchorVertical::BOTTOM,
 		sf::Vector2f(-70, -20),
 		sf::Vector2f(200, 50),
@@ -48,6 +50,19 @@ void Engine::uploadResources()
 			{
 				_buttons[buttonIndex]->setPosition(offset);
 				_buttons[buttonIndex]->getShape().setSize(size);
+			}
+		});
+
+	_checkboxAnchor.emplace(AnchorHorizontal::CENTER,
+		AnchorVertical::TOP,
+		sf::Vector2f(-70, -0),
+		sf::Vector2f(200, 50),
+		[this, checkboxIndex](const sf::Vector2f& offset, const sf::Vector2f& size)
+		{
+			if (checkboxIndex < _checkboxes.size() && _checkboxes[checkboxIndex])
+			{
+				_checkboxes[checkboxIndex]->setPosition(offset);
+				_checkboxes[checkboxIndex]->getShape().setSize(size);
 			}
 		});
 }
@@ -101,7 +116,8 @@ void Engine::update()
 
 	updatingButtons();
 
-	_anchor->update(sf::Vector2u(800, 600));
+	_checkboxAnchor->update(sf::Vector2u(800, 600));
+	_buttonAnchor->update(sf::Vector2u(800, 600));
 
 	for (auto const& button : _buttons)
 	{
@@ -150,7 +166,8 @@ void Engine::handleInput()
 			}
 			break;
 		case sf::Event::Resized:
-			_anchor->update(_window->getSize());
+			_buttonAnchor->update(_window->getSize());
+			_checkboxAnchor->update(_window->getSize());
 			break;
 		default:
 			break;
