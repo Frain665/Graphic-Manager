@@ -34,14 +34,15 @@ private:
 
 	std::vector<std::optional<AnchoredElement>> _buttonAnchors;
 	std::vector<std::optional<AnchoredElement>> _checkboxAnchors;
+	std::vector<std::optional<AnchoredElement>> _textFieldsAnchors;
 
 	const std::string _fontPath = RESOURCES_DIR "Fonts/defaultFont.otf";
 	sf::Font _font;
 
 	std::vector<std::unique_ptr<Button>> _buttons;
 	std::vector<std::unique_ptr<CheckBox>> _checkboxes;
+	std::vector<std::unique_ptr<TextField>> _textFields;
 
-	std::shared_ptr <TextField> _textField;
 
 public:
 	static Engine& getInstance();
@@ -58,7 +59,6 @@ public:
 	void run();
 	void render();
 	void updateButtons();
-	std::string generateRandomPassword();
 	void update();
 };
 

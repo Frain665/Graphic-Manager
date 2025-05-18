@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <memory>
+#include <chrono>
 #include <string>
+#include <functional>
 
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -46,6 +48,8 @@ private:
 	unsigned int _characterSize;
 	unsigned int _maxLength;
 
+	std::chrono::steady_clock::time_point _lastClickTime;
+	const std::chrono::milliseconds _clickDelay{ 200 };
 };
 
 #endif //TEXT_FIELD_HPP

@@ -61,7 +61,7 @@ void CheckBox::setPosition(const sf::Vector2f& pos)
 void CheckBox::setSize(const sf::Vector2f& size)
 {
 	_box.setSize(size);
-	_checkMark.setSize(size - sf::Vector2f{ 0.8f, 0.8f });
+	_checkMark.setSize(size - sf::Vector2f{ 120, 0.8f });
 }
 
 void CheckBox::setChecked(bool checked)

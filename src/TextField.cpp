@@ -63,14 +63,26 @@ void TextField::setPosition(const sf::Vector2f& pos)
 
 void TextField::handleEvent(const sf::RenderWindow& window, const sf::Event& event)
 {
-	if (event.type == sf::Event::MouseButtonPressed)
+	if (event.type == sf::Event::MouseButtonPressed &&
+		event.mouseButton.button == sf::Mouse::Left &&
+		(std::chrono::steady_clock::now() - _lastClickTime) > _clickDelay)
 	{
-		 const auto mousePos = sf::Vector2f( event.mouseButton.x, event.mouseButton.y );
+		_lastClickTime = std::chrono::steady_clock::now();
+
+		const auto mousePos = window.mapPixelToCoords(
+			{ event.mouseButton.x, event.mouseButton.y },
+			window.getView()
+		);
+
+		const bool wasActive = _isActive;
+
 		_isActive = _background.getGlobalBounds().contains(mousePos);
 
-		_text.setFillColor(_isActive ? _activeColor : _inactiveColor);
-		_background.setOutlineColor(_isActive ? _activeColor : _inactiveColor);
-
+		if (wasActive != _isActive)
+		{
+			_text.setFillColor(_isActive ? _activeColor : _inactiveColor);
+			_background.setOutlineColor(_isActive ? _activeColor : _inactiveColor);
+		}
 		if (_isActive)
 		{
 			_keyRepeatClock.restart();
@@ -81,7 +93,17 @@ void TextField::handleEvent(const sf::RenderWindow& window, const sf::Event& eve
 	{
 		handleTextInput(event.text.unicode);
 	}
-	
+
+	if (_isActive && event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::Enter ||
+			event.key.code == sf::Keyboard::Tab)
+		{
+			_isActive = false;
+			_text.setFillColor(_inactiveColor);
+			_background.setOutlineColor(_inactiveColor);
+		}
+	}
 }
 
 void TextField::handleTextInput(sf::Uint32 unicode)

@@ -17,12 +17,24 @@ void Engine::uploadResources()
 	DefaultButtonFactory defaultButtonFactory(_font);
 
 	_buttons.push_back(defaultButtonFactory.createButton("Generate", { 200, 50 }));
-	_buttons.push_back(defaultButtonFactory.createButton("Copy", { 200, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
 
 	auto createCheckboxCallback = [](const std::string& name)
 		{
-			return [name](bool checked) {
-				std::cout << name << " " << (checked ? "ON" : "OFF") << std::endl;
+			return [name](bool checked) 
+				{
+
+				if (name == "test")
+				{
+					std::cout << "^)" << std::endl;
+				}
+				else
+				{
+					std::cout << name << " " << (checked ? "ON" : "OFF") << std::endl;
+				}
 				};
 		};
 
@@ -33,19 +45,21 @@ void Engine::uploadResources()
 			_checkboxes.push_back(std::move(cb));
 		};
 
+	addCheckbox("test", { 400, 200 });
 	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 100 });
-	addCheckbox("Enable some", { 400, 600 });
 	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 100 });
-	addCheckbox("Enable some", { 400, 600 });
 	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 100 });
-	addCheckbox("Enable some", { 400, 600 });
+	addCheckbox("Enable some", { 400, 200 });
+	addCheckbox("Enable some", { 400, 200 });
+	addCheckbox("Enable some", { 400, 200 });
+	addCheckbox("Enable some", { 400, 200 });
+	addCheckbox("Enable some", { 400, 200 });
 
-	_textField = std::make_shared <TextField>();
-	_textField->setSize(sf::Vector2f(100.f, 50.f));
-	_textField->setPosition(sf::Vector2f(400, 300.f));
+	auto textField = std::make_unique<TextField>();
+	textField->setSize(sf::Vector2f(300.f, 50.f));
+	textField->setPosition(sf::Vector2f(400.f, 100.f));
+	
+	_textFields.emplace_back(std::move(textField));
 
 	auto setupAnchors = [](auto& anchors, auto& container, auto... args) 
 		{
@@ -60,10 +74,10 @@ void Engine::uploadResources()
 					sf::Vector2f finalOffset = 
 					{
 						offset.x,
-						offset.y + (i * (size.y + 10))
+						offset.y + (static_cast<float>(i) * (size.y + 10))
 					};
 					container[i]->setPosition(finalOffset);
-					container[i]->getShape().setSize(size);
+					container[i]->setSize(size);
 				}
 				});
 		}
@@ -73,7 +87,7 @@ void Engine::uploadResources()
 	setupAnchors(_buttonAnchors, _buttons,
 		AnchorHorizontal::CENTER,
 		AnchorVertical::BOTTOM,
-		sf::Vector2f(-70, -100),
+		sf::Vector2f(-70, -300),
 		sf::Vector2f(200, 50)
 	);
 
@@ -83,6 +97,13 @@ void Engine::uploadResources()
 		AnchorVertical::TOP,
 		sf::Vector2f(-0, 20),
 		sf::Vector2f(150, 15)
+	);
+
+	setupAnchors(_textFieldsAnchors, _textFields,
+		AnchorHorizontal::CENTER,
+		AnchorVertical::TOP,
+		sf::Vector2f(0, 20),
+		sf::Vector2f(300, 50)
 	);
 
 }
@@ -125,40 +146,39 @@ void Engine::init()
 
 void Engine::update()
 {
+	if (!_window) return;
 	this->handleInput();
-
-	_textField->handleEvent(*_window, _event);
-
-	for (auto const& box : _checkboxes)
-	{
-		box->handleEvent(*_window, _event);
-	}
-
-	for (auto const& button : _buttons)
-	{
-		button->handleEvent(*_window, _event);
-	}
-
-	updateButtons();
 
 	const sf::Vector2u windowSize = _window->getSize();
 
-	size_t min_anchors = std::min(_buttonAnchors.size(), _checkboxAnchors.size());
-	for (size_t i = 0; i < min_anchors; ++i) 
+	auto updateAnchors = [windowSize](auto& anchors) 
 	{
-		if (_buttonAnchors[i]) _buttonAnchors[i]->update(windowSize);
-		if (_checkboxAnchors[i]) _checkboxAnchors[i]->update(windowSize);
+		for (auto& anchor : anchors) 
+		{
+			if (anchor) anchor->update(windowSize);
+		}
+	};
+
+	updateAnchors(_buttonAnchors);
+	updateAnchors(_checkboxAnchors);
+	updateAnchors(_textFieldsAnchors);
+
+	for (auto const& textField : _textFields) 
+	{
+		if (textField) textField->handleEvent(*_window, _event);
 	}
 
+	for (auto const& box : _checkboxes) 
+	{
+		if (box) box->handleEvent(*_window, _event);
+	}
 
-	for (size_t i = min_anchors; i < _buttonAnchors.size(); ++i) 
+	for (auto const& button : _buttons) 
 	{
-		if (_buttonAnchors[i]) _buttonAnchors[i]->update(windowSize);
+		if (button) button->handleEvent(*_window, _event);
 	}
-	for (size_t i = min_anchors; i < _checkboxAnchors.size(); ++i) 
-	{
-		if (_checkboxAnchors[i]) _checkboxAnchors[i]->update(windowSize);
-	}
+
+	updateButtons();
 }
 
 void Engine::render()
@@ -175,7 +195,11 @@ void Engine::render()
 		box->draw(*_window);
 	}
 
-	_textField->draw(*_window);
+
+	for (const auto& textField : _textFields)
+	{
+		textField->draw(*_window);
+	}
 
 	_window->display();
 }
@@ -206,6 +230,7 @@ void Engine::handleInput()
 			{
 				_buttonAnchors[i]->update(_window->getSize());
 				_checkboxAnchors[i]->update(_window->getSize());
+				_textFields[i]->handleEvent(*_window, _event);
 			}
 			break;
 		default:

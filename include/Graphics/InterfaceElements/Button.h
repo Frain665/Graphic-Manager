@@ -44,7 +44,7 @@ public:
 
 	void setPosition(const sf::Vector2f& pos) override;
 	void setEnabled(bool enabled);
-//	void setSize(const sf::Vector2f& size);
+	void setSize(sf::Vector2f size);
 
 	sf::Color lerpColors(const sf::Color& a, const sf::Color& b, float t);
 

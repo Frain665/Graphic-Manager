@@ -38,6 +38,32 @@ void Button::setEnabled(bool enabled)
 	_state = enabled ? ButtonState::Normal : ButtonState::Disabled;
 }
 
+void Button::setSize(sf::Vector2f size)
+{
+	if (size.x <= 0 || size.y <= 0) return;
+
+	_shape.setSize(size);
+	_config.buttonSize = size;
+
+	sf::FloatRect textBounds = _config.title.getLocalBounds();
+	_config.title.setOrigin(textBounds.left + textBounds.width / 2,
+		textBounds.top + textBounds.height / 2);
+	_config.title.setPosition(
+		_shape.getPosition().x + size.x / 2,
+		_shape.getPosition().y + size.y / 2
+	);
+
+	/*
+		float scale = std::min(
+			(size.x * 0.8f) / textBounds.width,
+			(size.y * 0.8f) / textBounds.height
+		);
+		_config.title.setScale(scale, scale);
+	*/
+
+	updateAppearance();
+}
+
 sf::Color Button::lerpColors(const sf::Color& a, const sf::Color& b, float t)
 {
 	t = std::clamp(t, 0.0f, 0.1f);
