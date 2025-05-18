@@ -14,6 +14,7 @@
 #include <Graphics/InterfaceElements/ButtonFactory/Default_button_factory.h>
 #include <Exceptions.h>
 #include <AnchoredElement.h>
+#include <Graphics/InterfaceElements/ProgressBar.h>
 
 class Engine
 {
@@ -31,6 +32,8 @@ private:
 	sf::Event _event{};
 	sf::VideoMode _videoMode;
 	std::string _windowTitle;
+
+	std::unique_ptr<ProgressBar> _volumeBar;
 
 	std::vector<std::optional<AnchoredElement>> _buttonAnchors;
 	std::vector<std::optional<AnchoredElement>> _checkboxAnchors;

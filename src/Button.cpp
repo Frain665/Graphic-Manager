@@ -53,14 +53,6 @@ void Button::setSize(sf::Vector2f size)
 		_shape.getPosition().y + size.y / 2
 	);
 
-	/*
-		float scale = std::min(
-			(size.x * 0.8f) / textBounds.width,
-			(size.y * 0.8f) / textBounds.height
-		);
-		_config.title.setScale(scale, scale);
-	*/
-
 	updateAppearance();
 }
 

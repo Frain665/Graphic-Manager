@@ -61,6 +61,17 @@ void Engine::uploadResources()
 	
 	_textFields.emplace_back(std::move(textField));
 
+	_volumeBar = std::make_unique<ProgressBar>(sf::Vector2f(300, 50), sf::Color(50, 50, 50), sf::Color::Green);
+	_volumeBar->setPosition(sf::Vector2f(30.f, 300.f));
+	_volumeBar->setOrientation(true);
+	_volumeBar->showPercentage(true, _font, 16);
+	_volumeBar->setMaxValue(100.f);
+	_volumeBar->setValue(1.f);
+	_volumeBar->_onValueChanged = [](float value) 
+		{
+			std::cout << "Volume changed: " << value << "%\n";
+		};
+	
 	auto setupAnchors = [](auto& anchors, auto& container, auto... args) 
 		{
 		anchors.resize(container.size());
@@ -147,7 +158,11 @@ void Engine::init()
 void Engine::update()
 {
 	if (!_window) return;
-	this->handleInput();
+
+
+	handleInput();
+
+	_volumeBar->handleEvent(*_window, _event);
 
 	const sf::Vector2u windowSize = _window->getSize();
 
@@ -185,6 +200,8 @@ void Engine::render()
 {
 	_window->clear();
 
+	_volumeBar->draw(*_window);
+
 	for (auto const& button : _buttons)
 	{
 		button->draw(*_window);
@@ -195,11 +212,12 @@ void Engine::render()
 		box->draw(*_window);
 	}
 
-
 	for (const auto& textField : _textFields)
 	{
 		textField->draw(*_window);
 	}
+
+	
 
 	_window->display();
 }
