@@ -22,14 +22,18 @@ private:
 	sf::Text _label;
 	sf::Font _font;
 
+	const sf::Color _ACTIVE_BG_COLOR = sf::Color(70, 70, 70);
+	const sf::Color _INACTIVE_BG_COLOR = sf::Color(200, 200, 200);
+
 	std::function<void(bool)> _callback;
 
 	std::chrono::steady_clock::time_point _lastClickTime;
 	const std::chrono::milliseconds _clickDelay{ 200 };
-	
-
 public:
-	CheckBox(const std::string& text, const sf::Vector2f& pos, unsigned int characterSize = 16);
+	CheckBox(const sf::Font& font, 
+		const std::string& text, 
+		const sf::Vector2f& pos, 
+		unsigned int characterSize = 16);
 	CheckBox(CheckBox&& other) noexcept;
 
 	CheckBox& operator=(CheckBox&& other) noexcept;

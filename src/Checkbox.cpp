@@ -1,9 +1,10 @@
 #include <Graphics/InterfaceElements/Checkbox.h>
 
-CheckBox::CheckBox(const std::string& text,
+CheckBox::CheckBox(const sf::Font& font, 
+	const std::string& text,
 	const sf::Vector2f& pos,
 	unsigned int characterSize)
-	:_isChecked(false)
+	:_isChecked(false), _font(font)
 {
 	if (!_font.loadFromFile(RESOURCES_DIR "Fonts/defaultFont.otf"))
 	{
@@ -97,6 +98,7 @@ void CheckBox::draw(sf::RenderWindow& window)
 {
 	window.draw(_box);
 	window.draw(_checkMark);
+	window.draw(_label);
 }
 
 void CheckBox::handleEvent(const sf::RenderWindow& window, const sf::Event& event)
@@ -119,13 +121,13 @@ void CheckBox::handleEvent(const sf::RenderWindow& window, const sf::Event& even
 
 			if (_isChecked) 
 			{
-				_box.setFillColor(sf::Color(70, 70, 70));    
-				_checkMark.setFillColor(sf::Color::Green);   
+				_box.setFillColor(_ACTIVE_BG_COLOR);    
+				_checkMark.setFillColor(sf::Color::Green);
 				_label.setFillColor(sf::Color::White);
 			}
 			else 
 			{
-				_box.setFillColor(sf::Color(200, 200, 200)); 
+				_box.setFillColor(_INACTIVE_BG_COLOR); 
 				_checkMark.setFillColor(sf::Color::Blue); 
 				_label.setFillColor(sf::Color::Black);      
 			}

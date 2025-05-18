@@ -17,7 +17,8 @@ void AnchoredElement::update(const sf::Vector2u& windowSize)
     sf::Vector2f newPosition;
     sf::Vector2f newSize;
 
-    switch (_horizAnchor) {
+    switch (_horizAnchor) 
+    {
     case AnchorHorizontal::LEFT:
         newPosition.x = _offset.x;
         newSize.x = _size.x;
@@ -36,7 +37,8 @@ void AnchoredElement::update(const sf::Vector2u& windowSize)
         break;
     }
 
-    switch (_vertAnchor) {
+    switch (_vertAnchor) 
+    {
     case AnchorVertical::TOP:
         newPosition.y = _offset.y;
         newSize.y = _size.y;

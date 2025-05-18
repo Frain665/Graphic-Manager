@@ -32,14 +32,15 @@ private:
 	sf::VideoMode _videoMode;
 	std::string _windowTitle;
 
-	std::optional<AnchoredElement> _buttonAnchor;
-	std::optional<AnchoredElement> _checkboxAnchor;
+	std::vector<std::optional<AnchoredElement>> _buttonAnchors;
+	std::vector<std::optional<AnchoredElement>> _checkboxAnchors;
 
 	const std::string _fontPath = RESOURCES_DIR "Fonts/defaultFont.otf";
 	sf::Font _font;
 
 	std::vector<std::unique_ptr<Button>> _buttons;
 	std::vector<std::unique_ptr<CheckBox>> _checkboxes;
+
 	std::shared_ptr <TextField> _textField;
 
 public:
@@ -56,7 +57,7 @@ public:
 	void handleInput();
 	void run();
 	void render();
-	void updatingButtons();
+	void updateButtons();
 	std::string generateRandomPassword();
 	void update();
 };
