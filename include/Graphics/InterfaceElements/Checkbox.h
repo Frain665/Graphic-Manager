@@ -34,8 +34,8 @@ public:
 		const std::string& text, 
 		const sf::Vector2f& pos, 
 		unsigned int characterSize = 16);
-	CheckBox(CheckBox&& other) noexcept;
 
+	CheckBox(CheckBox&& other) noexcept;
 	CheckBox& operator=(CheckBox&& other) noexcept;
 
 	void setPosition(const sf::Vector2f& pos) override;

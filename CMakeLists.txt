@@ -16,7 +16,7 @@ message(STATUS "SFML found: ${SFML_VERSION}")
 file(GLOB SOURCES src/*.cpp)
 file(GLOB HEADERS include/*.h)
 file(GLOB INTERFACE_ELEMENTS include/Graphics/InterfaceElements/*.h)
-file(GLOB BUTTON_FACTORY include/Graphics/InterfaceElements/ButtonFactory/*.h)
+file(GLOB FACTORIES include/Graphics/InterfaceElements/Factories/*.h)
 file(GLOB TESTS tests/*.cpp tests/*.h)
 
 add_executable(
@@ -25,7 +25,7 @@ add_executable(
     ${HEADERS} 
     ${INTERFACE_ELEMENTS}
     ${TESTS}
-    ${BUTTON_FACTORY}
+    ${FACTORIES}
 )
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources
@@ -36,7 +36,7 @@ source_group("Source Files" FILES ${SOURCES})
 source_group("Header Files" FILES ${HEADERS})
 source_group("Graphics/InterfaceElements" FILES ${INTERFACE_ELEMENTS})
 source_group("Tests Files" FILES ${TESTS})
-source_group("Graphics/InterfaceElements/ButtonFactory" FILES ${BUTTON_FACTORY})
+source_group("Graphics/InterfaceElements/Factories" FILES ${FACTORIES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "include" "tests")
 

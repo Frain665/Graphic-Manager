@@ -1,18 +1,21 @@
 #ifndef DEFAULT_BUTTON_FACTORY 
 #define DEFAULT_BUTTON_FACTORY
 
-#include <Graphics/InterfaceElements/ButtonFactory/Button_factory.h>
+#include <Graphics/InterfaceElements/Factories/Button_factory.h>
 
 #include <SFML/Graphics.hpp>
 
-class DefaultButtonFactory : public ButtonFactory {
+class DefaultButtonFactory : public ButtonFactory 
+{
+private:
+    const sf::Font& _font;
+
 public:
     explicit DefaultButtonFactory(const sf::Font& font)
         :_font(font) 
     {}
 
-    std::unique_ptr<Button> createButton
-    (
+    std::unique_ptr<Button> createButton(
         const std::string& text,
         const sf::Vector2f& position,
         const sf::Vector2f& size = { 200, 50 }
@@ -31,8 +34,6 @@ public:
         return std::make_unique<Button>(config);
     }
 
-private:
-    const sf::Font& _font;
 };
 
 #endif //DEFAULT_BUTTON_FACTORY
