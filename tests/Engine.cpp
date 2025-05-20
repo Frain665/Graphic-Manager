@@ -15,6 +15,7 @@ void Engine::uploadResources()
 	}
 
 	DefaultButtonFactory defaultButtonFactory(_font);
+	DefaultCheckBoxFactory defaultCheckBoxFactory;
 
 	_buttons.push_back(defaultButtonFactory.createButton("Generate", { 200, 50 }));
 	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
@@ -38,22 +39,14 @@ void Engine::uploadResources()
 				};
 		};
 
-	auto addCheckbox = [&](const std::string& name, sf::Vector2f pos)
-		{
-			auto cb = std::make_unique<CheckBox>(_font, name, pos);
-			cb->setCallback(createCheckboxCallback(name));
-			_checkboxes.push_back(std::move(cb));
-		};
+	//auto addCheckbox = [&](const std::string& name, sf::Vector2f pos)
+	//	{
+	//		auto cb = std::make_unique<CheckBox>(_font, name, pos);
+	//		cb->setCallback(createCheckboxCallback(name));
+	//		_checkboxes.push_back(std::move(cb));
+	//	};
 
-	addCheckbox("test", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
-	addCheckbox("Enable some", { 400, 200 });
+	_checkboxes.emplace_back(defaultButtonFactory.createButton("some", { 400, 200 }, { 100, 50 }));
 
 	auto textField = std::make_unique<TextField>();
 	textField->setSize(sf::Vector2f(300.f, 50.f));
