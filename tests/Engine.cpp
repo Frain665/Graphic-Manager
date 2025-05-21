@@ -25,33 +25,39 @@ void Engine::uploadResources()
 
 	auto createCheckboxCallback = [](const std::string& name)
 		{
-			return [name](bool checked) 
+			return [name](bool checked)
 				{
 
-				if (name == "test")
-				{
-					std::cout << "^)" << std::endl;
-				}
-				else
-				{
-					std::cout << name << " " << (checked ? "ON" : "OFF") << std::endl;
-				}
+					if (name == "test")
+					{
+						std::cout << "^)" << std::endl;
+					}
+					else if (name == "test2")
+					{
+						std::cout << "............." << std::endl;
+					}
+					else
+					{
+						std::cout << name << " " << (checked ? "ON" : "OFF") << std::endl;
+					}
 				};
 		};
 
-	//auto addCheckbox = [&](const std::string& name, sf::Vector2f pos)
-	//	{
-	//		auto cb = std::make_unique<CheckBox>(_font, name, pos);
-	//		cb->setCallback(createCheckboxCallback(name));
-	//		_checkboxes.push_back(std::move(cb));
-	//	};
+	auto checkbox = defaultCheckBoxFactory.createCheckBox(_font, "test", { 300, 400 });
+	checkbox->setCallback(createCheckboxCallback("test"));
+	auto checkbox1 = defaultCheckBoxFactory.createCheckBox(_font, "test1", { 300, 400 });
+	checkbox1->setCallback(createCheckboxCallback("test1"));
+	auto checkbox2 = defaultCheckBoxFactory.createCheckBox(_font, "test2", { 300, 400 });
+	checkbox2->setCallback(createCheckboxCallback("test2"));
 
-	_checkboxes.emplace_back(defaultButtonFactory.createButton("some", { 400, 200 }, { 100, 50 }));
+	_checkboxes.push_back(std::move(checkbox));
+	_checkboxes.push_back(std::move(checkbox1));
+	_checkboxes.push_back(std::move(checkbox2));
 
 	auto textField = std::make_unique<TextField>();
 	textField->setSize(sf::Vector2f(300.f, 50.f));
 	textField->setPosition(sf::Vector2f(400.f, 100.f));
-	
+
 	_textFields.emplace_back(std::move(textField));
 
 	_volumeBar = std::make_unique<ProgressBar>(sf::Vector2f(300, 50), sf::Color(50, 50, 50), sf::Color::Green);
@@ -60,31 +66,31 @@ void Engine::uploadResources()
 	_volumeBar->showPercentage(true, _font, 16);
 	_volumeBar->setMaxValue(100.f);
 	_volumeBar->setValue(1.f);
-	_volumeBar->_onValueChanged = [](float value) 
+	_volumeBar->_onValueChanged = [](float value)
 		{
 			std::cout << "Volume changed: " << value << "%\n";
 		};
-	
-	auto setupAnchors = [](auto& anchors, auto& container, auto... args) 
+
+	auto setupAnchors = [](auto& anchors, auto& container, auto... args)
 		{
-		anchors.resize(container.size());
-		for (size_t i = 0; i < container.size(); ++i) 
-		{
-			anchors[i].emplace(args..., [&container, i](const auto& offset, const auto& size)
-				{
-				if (i < container.size())
-				{
-			
-					sf::Vector2f finalOffset = 
+			anchors.resize(container.size());
+			for (size_t i = 0; i < container.size(); ++i)
+			{
+				anchors[i].emplace(args..., [&container, i](const auto& offset, const auto& size)
 					{
-						offset.x,
-						offset.y + (static_cast<float>(i) * (size.y + 10))
-					};
-					container[i]->setPosition(finalOffset);
-					container[i]->setSize(size);
-				}
-				});
-		}
+						if (i < container.size())
+						{
+
+							sf::Vector2f finalOffset =
+							{
+								offset.x,
+								offset.y + (static_cast<float>(i) * (size.y + 10))
+							};
+							container[i]->setPosition(finalOffset);
+							container[i]->setSize(size);
+						}
+					});
+			}
 		};
 
 
@@ -159,29 +165,29 @@ void Engine::update()
 
 	const sf::Vector2u windowSize = _window->getSize();
 
-	auto updateAnchors = [windowSize](auto& anchors) 
-	{
-		for (auto& anchor : anchors) 
+	auto updateAnchors = [windowSize](auto& anchors)
 		{
-			if (anchor) anchor->update(windowSize);
-		}
-	};
+			for (auto& anchor : anchors)
+			{
+				if (anchor) anchor->update(windowSize);
+			}
+		};
 
 	updateAnchors(_buttonAnchors);
 	updateAnchors(_checkboxAnchors);
 	updateAnchors(_textFieldsAnchors);
 
-	for (auto const& textField : _textFields) 
+	for (auto const& textField : _textFields)
 	{
 		if (textField) textField->handleEvent(*_window, _event);
 	}
 
-	for (auto const& box : _checkboxes) 
+	for (auto const& box : _checkboxes)
 	{
 		if (box) box->handleEvent(*_window, _event);
 	}
 
-	for (auto const& button : _buttons) 
+	for (auto const& button : _buttons)
 	{
 		if (button) button->handleEvent(*_window, _event);
 	}
@@ -210,7 +216,7 @@ void Engine::render()
 		textField->draw(*_window);
 	}
 
-	
+
 
 	_window->display();
 }
