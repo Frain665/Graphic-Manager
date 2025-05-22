@@ -2,6 +2,7 @@
 #define BUTTON_HPP
 
 #include <iostream>
+#include <string>
 #include <cassert>
 #include <functional>
 
@@ -49,7 +50,7 @@ public:
 	sf::Color lerpColors(const sf::Color& a, const sf::Color& b, float t);
 
 	sf::RectangleShape& getShape();
-	bool isClicked(const sf::Event& event) const;
+	bool isClicked() const;
 
 	void draw(sf::RenderWindow& window) override;
 	void handleEvent(const sf::RenderWindow& window, const sf::Event& event) override;

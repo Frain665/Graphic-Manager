@@ -223,7 +223,14 @@ void Engine::render()
 
 void Engine::updateButtons()
 {
-
+	if (_buttons.at(0)->isClicked())
+	{
+		std::cout << "Generate..." << std::endl;
+	}
+	else if (_buttons.at(1)->isClicked())
+	{
+		std::cout << "..." << std::endl;
+	}
 }
 
 void Engine::handleInput()

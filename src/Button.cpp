@@ -73,7 +73,7 @@ sf::RectangleShape& Button::getShape()
 	return _shape;
 }
 
-bool Button::isClicked(const sf::Event& event) const
+bool Button::isClicked() const
 {
 	return _wasPressed;
 }
