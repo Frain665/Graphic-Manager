@@ -13,6 +13,7 @@ Button::Button(const ButtonConfig& config)
 		_config.buttonPosition.x + _config.buttonSize.x / 2 - _config.title.getGlobalBounds().width / 2,
 		_config.buttonPosition.y + _config.buttonSize.y / 2 - _config.title.getGlobalBounds().height / 2
 	);
+
 }
 
 void Button::setPosition(const sf::Vector2f& pos)
@@ -73,9 +74,14 @@ sf::RectangleShape& Button::getShape()
 	return _shape;
 }
 
-bool Button::isClicked() const
+bool Button::isClicked()
 {
-	return _wasPressed;
+	if (_wasClicked)
+	{
+		_wasClicked = false;
+		return true;
+	}
+	return false;
 }
 
 void Button::draw(sf::RenderWindow& window)
@@ -86,10 +92,10 @@ void Button::draw(sf::RenderWindow& window)
 
 void Button::handleEvent(const sf::RenderWindow& window, const sf::Event& event)
 {
-	if (_state == ButtonState::Disabled) return;
+	if (_state == ButtonState::Disabled)
+		return;
 
 	auto mousePos = sf::Mouse::getPosition(window);
-
 	bool contains = _shape.getGlobalBounds().contains(
 		static_cast<float>(mousePos.x),
 		static_cast<float>(mousePos.y)
@@ -101,28 +107,23 @@ void Button::handleEvent(const sf::RenderWindow& window, const sf::Event& event)
 			event.mouseButton.button == sf::Mouse::Left)
 		{
 			_state = ButtonState::Pressed;
-			_wasPressed = true;
 		}
 		else if (event.type == sf::Event::MouseButtonReleased &&
-			event.mouseButton.button == sf::Mouse::Left &&
-			_wasPressed)
+			event.mouseButton.button == sf::Mouse::Left)
 		{
-			if (_config.onClickAction)
-				_config.onClickAction();
-			_wasPressed = false;
-			_state = ButtonState::Hovered;
-		}
-		else if (_state != ButtonState::Pressed)
-		{
+			if (_state == ButtonState::Pressed)
+			{
+				if (_config.onClickAction)
+					_config.onClickAction();
+				_wasClicked = true;
+			}
 			_state = ButtonState::Hovered;
 		}
 	}
 	else
 	{
 		_state = ButtonState::Normal;
-
-		_wasPressed = false;
-
+		_wasClicked = false;
 	}
 
 	updateAppearance();

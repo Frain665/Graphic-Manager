@@ -11,6 +11,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace ButtonConstants
 {
@@ -50,7 +51,7 @@ public:
 	sf::Color lerpColors(const sf::Color& a, const sf::Color& b, float t);
 
 	sf::RectangleShape& getShape();
-	bool isClicked() const;
+	bool isClicked();
 
 	void draw(sf::RenderWindow& window) override;
 	void handleEvent(const sf::RenderWindow& window, const sf::Event& event) override;
@@ -62,7 +63,7 @@ private:
 	ButtonConfig _config;
 	ButtonState _state = ButtonState::Normal;
 
-	bool _wasPressed = false;
+	bool _wasClicked = false;
 };
 
 #endif //BUTTON_HPP

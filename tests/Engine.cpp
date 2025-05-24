@@ -49,7 +49,6 @@ void Engine::uploadResources()
 	checkbox1->setCallback(createCheckboxCallback("test1"));
 	auto checkbox2 = defaultCheckBoxFactory.createCheckBox(_font, "test2", { 300, 400 });
 	checkbox2->setCallback(createCheckboxCallback("test2"));
-
 	_checkboxes.push_back(std::move(checkbox));
 	_checkboxes.push_back(std::move(checkbox1));
 	_checkboxes.push_back(std::move(checkbox2));
@@ -57,7 +56,6 @@ void Engine::uploadResources()
 	auto textField = std::make_unique<TextField>();
 	textField->setSize(sf::Vector2f(300.f, 50.f));
 	textField->setPosition(sf::Vector2f(400.f, 100.f));
-
 	_textFields.emplace_back(std::move(textField));
 
 	_volumeBar = std::make_unique<ProgressBar>(sf::Vector2f(300, 50), sf::Color(50, 50, 50), sf::Color::Green);
