@@ -30,8 +30,8 @@ public:
 		config.buttonSize = size;
 		config.buttonPosition = position;
 		config.title = sf::Text(text, _font, 20);
-		config.normalColor = sf::Color(100, 100, 200);
-		config.hoverColor = sf::Color(150, 150, 255);
+		config.normalColor = sf::Color(21, 21, 178);
+		config.hoverColor = sf::Color(20, 66, 241);
 		config.outlineThickness = 2;
 		config.outlineColor = sf::Color::White;
 

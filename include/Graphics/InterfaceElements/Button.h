@@ -49,6 +49,7 @@ public:
 	void setSize(sf::Vector2f size);
 
 	sf::Color lerpColors(const sf::Color& a, const sf::Color& b, float t);
+	sf::Color lerpOverTime(const sf::Color& from, const sf::Color& to, float speed);
 
 	sf::RectangleShape& getShape();
 	bool isClicked();
@@ -64,6 +65,9 @@ private:
 	ButtonState _state = ButtonState::Normal;
 
 	bool _wasClicked = false;
+
+	sf::Clock _animationClock;
+	sf::Clock _hoverTimer;
 };
 
 #endif //BUTTON_HPP

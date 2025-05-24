@@ -59,14 +59,22 @@ void Button::setSize(sf::Vector2f size)
 
 sf::Color Button::lerpColors(const sf::Color& a, const sf::Color& b, float t)
 {
-	t = std::clamp(t, 0.0f, 0.1f);
+	t = std::clamp(t, 0.0f, 1.0f); 
+
+	if (a == b) return a;
 
 	return sf::Color(
 		static_cast<sf::Uint8>(a.r + (b.r - a.r) * t),
 		static_cast<sf::Uint8>(a.g + (b.g - a.g) * t),
-		static_cast<sf::Uint8>(a.b + (b.g - a.b) * t),
+		static_cast<sf::Uint8>(a.b + (b.b - a.b) * t), 
 		static_cast<sf::Uint8>(a.a + (b.a - a.a) * t)
 	);
+}
+
+sf::Color Button::lerpOverTime(const sf::Color& from, const sf::Color& to, float speed)
+{
+	float t = std::min(_animationClock.getElapsedTime().asSeconds() * speed, 1.0f);
+	return lerpColors(from, to, t);
 }
 
 sf::RectangleShape& Button::getShape()
@@ -81,6 +89,7 @@ bool Button::isClicked()
 		_wasClicked = false;
 		return true;
 	}
+	
 	return false;
 }
 
@@ -101,24 +110,41 @@ void Button::handleEvent(const sf::RenderWindow& window, const sf::Event& event)
 		static_cast<float>(mousePos.y)
 	);
 
+	if (event.type == sf::Event::MouseMoved)
+	{
+		if (!contains && _state == ButtonState::Pressed)
+		{
+			_state = ButtonState::Normal;
+		}
+	}
+
 	if (contains)
 	{
-		if (event.type == sf::Event::MouseButtonPressed &&
-			event.mouseButton.button == sf::Mouse::Left)
+
+		if (contains)
 		{
-			_state = ButtonState::Pressed;
-		}
-		else if (event.type == sf::Event::MouseButtonReleased &&
-			event.mouseButton.button == sf::Mouse::Left)
-		{
-			if (_state == ButtonState::Pressed)
+			if (event.type == sf::Event::MouseButtonPressed &&
+				event.mouseButton.button == sf::Mouse::Left)
+			{
+				_state = ButtonState::Pressed;
+			}
+			else if (event.type == sf::Event::MouseButtonReleased &&
+				event.mouseButton.button == sf::Mouse::Left &&
+				_state == ButtonState::Pressed &&
+				!_wasClicked)
 			{
 				if (_config.onClickAction)
 					_config.onClickAction();
 				_wasClicked = true;
+				_state = ButtonState::Hovered;
+				_animationClock.restart();
 			}
-			_state = ButtonState::Hovered;
 		}
+		else
+		{
+			_state = ButtonState::Normal;
+		}
+
 	}
 	else
 	{
@@ -137,16 +163,22 @@ void Button::updateAppearance()
 	switch (_state)
 	{
 	case ButtonState::Hovered:
-		_shape.setFillColor(lerpColors(_shape.getFillColor(), targetColor, 200.1f));
+		if (_hoverTimer.getElapsedTime().asMilliseconds() > 100)  
+			targetColor = _config.hoverColor;
 		break;
-	case ButtonState::Pressed:
-		_shape.setFillColor(_config.pressedColor);
-		break;
-	case ButtonState::Disabled:
-		_shape.setFillColor(_config.disabledColor);
-		break;
-	default:
-		_shape.setFillColor(_config.normalColor);
-	}
 
+	case ButtonState::Pressed:
+		targetColor = _config.pressedColor;
+		_shape.setFillColor(lerpOverTime(_shape.getFillColor(), targetColor, 0.12f));
+		break;
+
+	case ButtonState::Disabled:
+		targetColor = _config.disabledColor;
+		_shape.setFillColor(lerpOverTime(_shape.getFillColor(), targetColor, 0.1f));
+		break;
+
+	default: 
+		targetColor = _config.normalColor;
+		_shape.setFillColor(lerpOverTime(_shape.getFillColor(), targetColor, 0.15f));
+	}
 }

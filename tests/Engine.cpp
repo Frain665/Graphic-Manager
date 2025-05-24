@@ -17,24 +17,24 @@ void Engine::uploadResources()
 	DefaultButtonFactory defaultButtonFactory(_font);
 	DefaultCheckBoxFactory defaultCheckBoxFactory;
 
-	_buttons.push_back(defaultButtonFactory.createButton("Generate", { 200, 50 }));
-	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
-	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
-	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
-	_buttons.push_back(defaultButtonFactory.createButton("Something", { 200, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("some kind of method", { 400, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("some kind of method", { 400, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("some kind of method", { 400, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("some kind of method", { 400, 50 }));
+	_buttons.push_back(defaultButtonFactory.createButton("some kind of method", { 400, 50 }));
 
 	auto createCheckboxCallback = [](const std::string& name)
 		{
 			return [name](bool checked)
 				{
 
-					if (name == "test")
+					if (name == "checkBox")
 					{
-						std::cout << "^)" << std::endl;
+						std::cout << ":)" << std::endl;
 					}
-					else if (name == "test2")
+					else if (name == "checkBox2")
 					{
-						std::cout << "............." << std::endl;
+						std::cout << ":(" << std::endl;
 					}
 					else
 					{
@@ -43,12 +43,12 @@ void Engine::uploadResources()
 				};
 		};
 
-	auto checkbox = defaultCheckBoxFactory.createCheckBox(_font, "test", { 300, 400 });
-	checkbox->setCallback(createCheckboxCallback("test"));
-	auto checkbox1 = defaultCheckBoxFactory.createCheckBox(_font, "test1", { 300, 400 });
-	checkbox1->setCallback(createCheckboxCallback("test1"));
-	auto checkbox2 = defaultCheckBoxFactory.createCheckBox(_font, "test2", { 300, 400 });
-	checkbox2->setCallback(createCheckboxCallback("test2"));
+	auto checkbox = defaultCheckBoxFactory.createCheckBox(_font, "checkBox", { 300, 400 });
+	checkbox->setCallback(createCheckboxCallback("checkBox"));
+	auto checkbox1 = defaultCheckBoxFactory.createCheckBox(_font, "checkBox1", { 300, 400 });
+	checkbox1->setCallback(createCheckboxCallback("checkBox1"));
+	auto checkbox2 = defaultCheckBoxFactory.createCheckBox(_font, "checkBox2", { 300, 400 });
+	checkbox2->setCallback(createCheckboxCallback("checkBox2"));
 	_checkboxes.push_back(std::move(checkbox));
 	_checkboxes.push_back(std::move(checkbox1));
 	_checkboxes.push_back(std::move(checkbox2));
@@ -96,7 +96,7 @@ void Engine::uploadResources()
 		AnchorHorizontal::CENTER,
 		AnchorVertical::BOTTOM,
 		sf::Vector2f(-70, -300),
-		sf::Vector2f(200, 50)
+		sf::Vector2f(240, 50)
 	);
 
 
