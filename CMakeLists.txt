@@ -19,6 +19,8 @@ file(GLOB INTERFACE_ELEMENTS include/Graphics/InterfaceElements/*.h)
 file(GLOB FACTORIES include/Graphics/InterfaceElements/Factories/*.h)
 file(GLOB TESTS tests/*.cpp tests/*.h)
 
+file(GLOB MENU examples/test/*.cpp)
+
 add_executable(
     ${PROJECT_NAME} 
     ${SOURCES} 
@@ -26,6 +28,7 @@ add_executable(
     ${INTERFACE_ELEMENTS}
     ${TESTS}
     ${FACTORIES}
+    ${MENU}
 )
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources
@@ -37,6 +40,7 @@ source_group("Header Files" FILES ${HEADERS})
 source_group("Graphics/InterfaceElements" FILES ${INTERFACE_ELEMENTS})
 source_group("Tests Files" FILES ${TESTS})
 source_group("Graphics/InterfaceElements/Factories" FILES ${FACTORIES})
+source_group("Examples/test" FILES ${MENU})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "include" "tests")
 
